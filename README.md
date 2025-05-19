@@ -1,11 +1,14 @@
 # MouseAndKeyboardVisualizer
 
 ## Requirements
+### Version
 - Python 3 (3.11.9 is what was used for this)
+### Packages
 - pynput
 - screeninfo
 - matplotlib
 - seaborn
+# OS
 - must be on windows (uses winsound)
 
 ## Usage
