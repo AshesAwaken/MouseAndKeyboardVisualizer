@@ -7,6 +7,7 @@
 - pynput
 - screeninfo
 - matplotlib
+- numpy
 - seaborn
 ### OS
 - must be on windows (uses winsound)
