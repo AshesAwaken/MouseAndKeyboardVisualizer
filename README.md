@@ -8,7 +8,7 @@
 - screeninfo
 - matplotlib
 - seaborn
-# OS
+### OS
 - must be on windows (uses winsound)
 
 ## Usage
