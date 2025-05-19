@@ -1,9 +1,8 @@
 from pynput.keyboard import Listener as KeyboardListener
 from pynput.mouse import Listener as MouseListener
 from pynput.keyboard import Key
-import os, logging, csv, time
-import statsVisual, utility
-import winsound
+import os, logging, csv, time, winsound, sys
+import statsVisual
 from screeninfo import get_monitors
 monitor = get_monitors()[0]
 screen_width = monitor.width
@@ -17,7 +16,6 @@ timesPressed = dict()
 prevMouseX, prevMouseY = 0, 0
 lastTime = time.time()
 startTime = time.time()
-MOUSECAPTURETIMEDIF = 0.1
 MAXRUNNINGTIME = 180 # this number is in seconds
 running = True
 keyboardStatsFile = 'keyStats.csv'
@@ -31,6 +29,9 @@ if os.path.exists(keyboardStatsFile):
     os.remove(keyboardStatsFile)
 
 logging.basicConfig(filename=(mouseStatsFile), level=logging.DEBUG, format='')
+
+def checkForCenter(x,y):
+    return x in range(CENTERWIDTH-1, CENTERWIDTH+1) and y in range(CENTERHEIGHT-1, CENTERHEIGHT+1)
 
 def stopRunning():
     mouse_listener.stop()
@@ -57,7 +58,7 @@ def on_release(key):
 
 def on_move(x, y):
     global prevMouseX, prevMouseY, lastTime
-    if utility.checkForCenter(x,y): #idk if this is really needed
+    if checkForCenter(x,y): #idk if this is really needed
         x = CENTERWIDTH
         y = CENTERHEIGHT 
     if prevMouseX != x and prevMouseY != y: # filters out duplicate data if any slips through
@@ -66,6 +67,14 @@ def on_move(x, y):
     prevMouseX, prevMouseY = x, y
 
 if __name__ == "__main__":
+        args = sys.argv
+        if len(args) == 3:
+            CENTERWIDTH = int(args[1]) // 2
+            CENTERHEIGHT = int(args[2]) // 2
+        elif len(args) != 1:
+            print("Usage: python main.py <monitor width> <monitor height> or <no args>")
+        print(CENTERWIDTH, CENTERHEIGHT)
+
         for i in range(0,4):
             time.sleep(1)
             print('starting in ' + str(3-i) + ' seconds')
